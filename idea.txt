@@ -1,0 +1,23 @@
+Vision: A dungeon crawler roguelike that follows classic computer rpg elements/has a retro theme. Attempt to create an engaging experience through a balancing philosophy of fun and a large variety of build diversity.
+
+Display
+Isometric real time or turn based. I.e enter the gungeon or slay the spire. Potential use of a combat system similar to darkest dungeon.
+
+Systems
+- Character Stats
+- Character Enemies
+- Debuffs/Buffs
+
+Character
+- class???? forego classes and instead have characters be completely different?
+- hp
+- xp?
+- gold/shops
+- equipment
+    1. Headgear
+    2. Body
+    3. Gloves
+    4. Jewelry
+
+Enemies
+- Ranged/Melee

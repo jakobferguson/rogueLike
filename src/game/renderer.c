@@ -41,8 +41,8 @@ int init_window(int x, int y, struct window *w){
     *w = (struct window) {
         .height = y,
         .width = x,
-        .frame = calloc(x * y, sizeof(struct pixel_cell)) 
-        .window_buffer = malloc(x * y * )
+        .frame = calloc(x * y, sizeof(struct pixel_cell)), 
+        .screen_buffer = malloc(x * y * MAXCELLBYTESSIZE)
     };
     if (w->frame != NULL) return 0;
     else return -1;
@@ -57,9 +57,8 @@ int write_window(struct window *w){
      * write the line
      * next line
      */
-    char *line_buffer;  
     for (int i = 0; i < w->height; i++){
-        line_buffer = window_build_line_buffer(w->frame + (i * w->width), w->width);
+        line_buffer = window_build_line_buffer();
         write(STDOUT_FILENO, line_buffer, sizeof(line_buffer));
         write(STDOUT_FILENO, "\n", 1);
     }

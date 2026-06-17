@@ -42,3 +42,5 @@ int write_window(struct window *w);
 
 int init_box(struct box *b, int x, int y, char bg[], int border_type);
 int draw_box(struct box *b, struct window *w);
+
+

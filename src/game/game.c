@@ -62,11 +62,11 @@ int run_game(){
     struct box main_menu;
     char *chars = "1aaaa2aaaa3aaaa4aaaa5aaaa";
     
-    init_window(5, 5, &w);
-    init_box(&main_menu, 2, 2, "ab", 0);
-    memcpy(w.frame, chars, 25);
+    init_window(1, 1, &w);
+    //init_box(&main_menu, 2, 2, "ab", 0);
     //wait for resize?
-    draw_box(&main_menu, &w);
+    w.frame;
+    //draw_box(&main_menu, &w);
     write_window(&w);
     /*char buf;
     while (running){

@@ -48,18 +48,35 @@ int init_window(int x, int y, struct window *w){
     else return -1;
 }
 
-char *window_build_line_buffer(){
+int window_build_line_buffer(struct window *w, int line){
+    char *nextchar;
+    int offset = 0;
+    struct pixel_cell *p;
+    for (int i = 0; i < w->width; i++){
+        //parse pixel into builtstring 
+        p = w->frame + (w->width * line) + i;
+        
+        //check color
+        //check attributes
+        //write glyph
+        //clear
+
+        offset += fprintf(w->screen_buffer, "%s", p->byte);
+    }
+
+    return offset;
 }
 
 int write_window(struct window *w){
+    int offset;
     /*for the number of lines
      * parse the line
      * write the line
      * next line
      */
     for (int i = 0; i < w->height; i++){
-        line_buffer = window_build_line_buffer();
-        write(STDOUT_FILENO, line_buffer, sizeof(line_buffer));
+        offset = window_build_line_buffer(w, i);
+        write(STDOUT_FILENO, w->screen_buffer, sizeof(w->screen_buffer) - offset);
         write(STDOUT_FILENO, "\n", 1);
     }
 
@@ -84,7 +101,7 @@ int draw_box(struct box *b, struct window *w){
         const char *border_glyphs[] = {glyphs[LITE_TLC], glyphs[LITE_TBS], glyphs[LITE_TRC], glyphs[LITE_LRS], glyphs[LITE_BLC], glyphs[LITE_BRC]};
     }
     for (int i = 1; i < b->height - 1; i++){
-        memcpy(w->frame + (i * w->width), src, sizeof(src));
+        //memcpy(w->frame + (i * w->width), src, sizeof(src));
     }
     return 0;
 }

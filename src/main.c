@@ -10,9 +10,9 @@ int main(void){
     tcsetattr(STDIN_FILENO, TCSANOW, &newt);
     ///:tcgetattr(STDIN_FILENO, &oldt);
     //ensure that the flags are correct
-   
+    write(STDOUT_FILENO, "\033[?25l", 6);   
     run_game();
-
+    write(STDOUT_FILENO, "\033[?25h", 6);
     ///at exit, how do we deinf
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     return 0;

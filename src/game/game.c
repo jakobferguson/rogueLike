@@ -2,6 +2,7 @@
 #include "../menu/menu.h"
 #include "renderer.h"
 #include "controller.h"
+#include <string.h>
 #include <unistd.h>
 
 int running = 1;
@@ -37,7 +38,6 @@ int quit_game(){
 
 int play(){
     ///load data if there is any
-     
     return 0;
 }
 
@@ -57,13 +57,18 @@ int set_mainmenu_as_active(){
 
 int run_game(){
     ///Init
-    struct window w = {
-        .height = 50,
-        .width = 120
-    };
-
-    //wait for resize
-    char buf;
+    ///
+    struct window w;
+    struct box main_menu;
+    char *chars = "1aaaa2aaaa3aaaa4aaaa5aaaa";
+    
+    init_window(5, 5, &w);
+    init_box(&main_menu, 2, 2, "ab", 0);
+    memcpy(w.frame, chars, 25);
+    //wait for resize?
+    draw_box(&main_menu, &w);
+    write_window(&w);
+    /*char buf;
     while (running){
         if (game.screen_is_dirty){
             renderer_clear_screen();
@@ -75,7 +80,7 @@ int run_game(){
         if (read(STDIN_FILENO, &buf, 1) > 0){
             controller_read_command(&buf, &game);
         }
-    } 
+    } */
     ///Close down 
     return 0; 
 }

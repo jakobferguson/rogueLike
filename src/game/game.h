@@ -1,5 +1,6 @@
 #pragma once
 #include "../menu/menu.h"
+#include "renderer.h"
 
 struct game_state {
     int screen_is_dirty;
@@ -8,7 +9,7 @@ struct game_state {
     
 };
 
-int run_game();
+int run_game(int rows, int cols);
 int play();
 int quit_game();
 

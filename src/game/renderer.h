@@ -2,11 +2,8 @@
 
 #include <stdint.h>
 struct pixel_cell {
-    //length of the following glyph
-    uint8_t len;
-  
     //glyph/character
-    char byte[4];   
+    char byte[5];   
 
     //foreground rgb
     uint8_t fg_r;
@@ -19,7 +16,7 @@ struct pixel_cell {
     uint8_t bg_b;
 
     //character flags bold, italic, etc
-    uint8_t attributes;
+    uint16_t attributes;
 };
 
 struct window {
@@ -37,10 +34,39 @@ struct box {
     char *background;
 };
 
+struct label {
+    int width;
+    int height;
+    char *info;   
+    uint16_t attributes;
+};
+
+enum glyph_attributes {
+    BOLD,
+    FAINT,
+    ITALIC,
+    UNDERLINE,
+    BLINKSLOW,
+    BLINKFAST,
+    REVERSE,
+    CONCEAL,
+    STRIKETHROUGH,
+    DOUBLEUNDERLINE,
+    OVERLINE,
+    FRAMED,
+    ENCIRCLED,
+    HASATTRS,
+    HASCOLOR
+
+};
+
+
 int init_window(int x, int y, struct window *w);
 int write_window(struct window *w);
+void renderer_clear_screen(struct window *w);
 
 int init_box(struct box *b, int x, int y, char bg[], int border_type);
-int draw_box(struct box *b, struct window *w);
-
-
+int draw_box(struct box *b, struct window *w, int x, int y);
+int draw_label(struct label *l, struct window *w, int x, int y);
+void toggle_label_attributes(struct label *l, enum glyph_attributes attr);
+void clear_label_attributes(struct label *l);

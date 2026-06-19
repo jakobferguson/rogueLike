@@ -1,8 +1,7 @@
 #include "game.h"
 #include "../menu/menu.h"
-#include "renderer.h"
 #include "controller.h"
-#include <string.h>
+#include "renderer.h"
 #include <unistd.h>
 
 int running = 1;
@@ -10,19 +9,31 @@ int running = 1;
 struct menu main_menu = {
     .title = "Main Menu",
     .options = { 
-        (struct menu_option){ .label = "Start", .action = &play }, 
-        (struct menu_option){ .label = "Settings", .action = &set_settings_as_active },
-        (struct menu_option){ .label = "Quit", .action = &quit_game }
+        (struct menu_option){ .label = "Start", .action = &play, .rendered_label = (struct label){ .info = "Start"} }, 
+        (struct menu_option){ .label = "Settings", .action = &set_settings_as_active, .rendered_label  = (struct label){ .info = "Settings"}},
+        (struct menu_option){ .label = "Quit", .action = &quit_game, .rendered_label = (struct label){ .info = "Quit"} }
     },
-    .num_options = 3
+    .num_options = 3,
+    .rendered_menu = (struct box){
+        .height = 25,
+        .width = 45,
+        .border_type = 0,
+        .background = " "
+    }
 };
     
 struct menu settings_menu = {
     .title = "Settings",
     .options = {
-        (struct menu_option){ .label = "back", .action = &set_mainmenu_as_active }
+        (struct menu_option){ .label = "back", .action = &set_mainmenu_as_active, .rendered_label = (struct label) { .info = "back"} }
     },
-    .num_options = 1
+    .num_options = 1,
+    .rendered_menu = (struct box){
+        .height = 25,
+        .width = 45,
+        .border_type = 0,
+        .background = " "
+    }
 };
 
 struct game_state game = {
@@ -42,6 +53,7 @@ int play(){
 }
 
 int set_settings_as_active(){
+    clear_label_attributes(&game.active_menu->options[game.menu_selection].rendered_label);
     game.active_menu = &settings_menu;
     game.menu_selection = 0;
     game.screen_is_dirty = 1;
@@ -49,38 +61,33 @@ int set_settings_as_active(){
 }
 
 int set_mainmenu_as_active(){
+    clear_label_attributes(&game.active_menu->options[game.menu_selection].rendered_label);
     game.active_menu = &main_menu;
     game.menu_selection = 0;
     game.screen_is_dirty = 1;
     return 0;
 }
 
-int run_game(){
+int run_game(int rows, int cols){
     ///Init
-    ///
     struct window w;
-    struct box main_menu;
-    char *chars = "1aaaa2aaaa3aaaa4aaaa5aaaa";
-    
-    init_window(1, 1, &w);
-    //init_box(&main_menu, 2, 2, "ab", 0);
-    //wait for resize?
-    w.frame;
-    //draw_box(&main_menu, &w);
-    write_window(&w);
-    /*char buf;
+    init_window(rows, cols, &w);
+
+    char buf;
     while (running){
         if (game.screen_is_dirty){
-            renderer_clear_screen();
-            renderer_draw_border(&w, '=');
-            if (game.active_menu != NULL) renderer_renmenu(&w, game.active_menu, game.menu_selection);
-            
+            renderer_clear_screen(&w);
+            if (game.active_menu != NULL){
+                show_menu(&w, game.active_menu, (cols / 2) - (game.active_menu->rendered_menu.width / 2), (rows / 2) - (game.active_menu->rendered_menu.height / 2), game.menu_selection);
+            }
+            write_window(&w);
             game.screen_is_dirty = 0;
         }
         if (read(STDIN_FILENO, &buf, 1) > 0){
             controller_read_command(&buf, &game);
         }
-    } */
+    } 
+
     ///Close down 
     return 0; 
 }
